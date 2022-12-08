@@ -6,35 +6,30 @@ import { checkWinner } from '../../utils/checkWinner'
 
 export const Board = () => {
   const initialGameState = useInitialGameState()
-  const [gameState, setGameState] = useState(initialGameState)
-  const [activePlayer, setActivePlayer] = useState<PlayerValue>('X')
+  const [gameState, setGameState] = useState<BoardItemValue[][]>(initialGameState)
+  const [activePlayer, setActivePlayer] = useState<PlayerValue>(PlayerValue.X)
   const [gameOver, setGameOver] = useState<boolean>(false)
 
   useEffect(() => {
     const isWinner = checkWinner(gameState)
-    const boardFull = !gameState.some((row: any) => row.includes(null));
-    (isWinner === true || boardFull) && setGameOver(true)
+    const boardFull = !gameState.some((row: BoardItemValue[]) => row.includes(null));
+    (isWinner !== null || boardFull) && setGameOver(true)
   }, [gameState])
-
 
   const handlePlacement = (rowIndex: number, colIndex: number) => {
     if (!gameOver && gameState[rowIndex][colIndex] === null) {
       let newGameState = [...gameState]
       newGameState[rowIndex][colIndex] = activePlayer
       setGameState(newGameState)
-      activePlayer === 'X' ? setActivePlayer('O') : setActivePlayer('X')
+      activePlayer === PlayerValue.X ? setActivePlayer(PlayerValue.O) : setActivePlayer(PlayerValue.X)
     }
-  }
-
-  const getPlacementIndex = (row: BoardItemValue[], reverse?: boolean) => {
-    return reverse ? row.lastIndexOf(null) : row.indexOf(null)
   }
 
   return (
     <div>
       {gameState.map((row: BoardItemValue[], rowIndex: number) =>
         <S.BoardRow key={`row${rowIndex}`}>
-          <button onClick={() => handlePlacement(rowIndex, getPlacementIndex(row))}>+</button>
+          <button onClick={() => handlePlacement(rowIndex, row.indexOf(null))}>+</button>
           {row.map((item: BoardItemValue, colIndex) =>
             <S.BoardItem
               key={`i${rowIndex}${colIndex}`}
@@ -42,7 +37,7 @@ export const Board = () => {
               {item}
             </S.BoardItem>
           )}
-          <button onClick={() => handlePlacement(rowIndex, getPlacementIndex(row, true))}>+</button>
+          <button onClick={() => handlePlacement(rowIndex, row.lastIndexOf(null))}>+</button>
         </S.BoardRow>
       )}
     </div>

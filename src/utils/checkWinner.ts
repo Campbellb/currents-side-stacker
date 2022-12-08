@@ -1,28 +1,50 @@
-export const checkWinner = (gameState: any) => {
-  const getSectionOf2DArray = (arr: any, sectionFunc: any) =>
-    Array.prototype.concat.apply(
-      [],
-      arr.map((row: any, i: any) => row.filter((_: any, j: any) => sectionFunc(i, j)))
-    );
+import { BoardItemValue, PlayerValue } from "../types";
 
-  const rowLines = (array: any) => Array(array.length).fill(0).map((_, k) => (i: any, j: any) => i === k);
+const WINNING_NUMBER = 4
 
-  const colLines = (array: any) => Array(array.length).fill(0).map((_, k) => (i: any, j: any) => j === k);
+function checkHorizontal(gameState: BoardItemValue[][], player: PlayerValue) {
+  for (let i = 0; i < gameState.length; i++) {
+    let count = 0;
+    for (let j = 0; j < gameState[i].length; j++) {
+      if (gameState[i][j] === player) {
+        count++;
+        if (count === WINNING_NUMBER) {
+          return true;
+        }
+      } else {
+        count = 0;
+      }
+    }
+  }
+  return false;
+}
 
-  const leftDiag = (array: any) => (i: any, j: any) => i === j;
-  const rightDiag = (array: any) => (i: any, j: any) => i + j === array.length - 1;
+function checkVertical(gameState: BoardItemValue[][], player: PlayerValue) {
+  const transposedArray = gameState[0].map((_, colIndex) => gameState.map(row => row[colIndex]));
+  return checkHorizontal(transposedArray, player)
+}
 
-  const ourLines = (array: any) =>
-    rowLines(array)
-      .concat(colLines(array))
-      .concat(leftDiag(array))
-      .concat(rightDiag(array));
+function checkDiagonal1(gameState: BoardItemValue[][], player: PlayerValue) {
+  return false;
+}
 
-  const win = (evalLine: any) => new Set(evalLine).size === 1 && evalLine[0] !== null;
+function checkDiagonal2(gameState: BoardItemValue[][], player: PlayerValue) {
+  return false;
+}
 
-  const winResults = (array: any) => ourLines(array).map(line => win(getSectionOf2DArray(array, line)));
+export function checkWinner(gameState: BoardItemValue[][]) {
+  const isXWinner = checkVertical(gameState, PlayerValue.X)
+    || checkHorizontal(gameState, PlayerValue.X)
+    || checkDiagonal1(gameState, PlayerValue.X)
+    || checkDiagonal2(gameState, PlayerValue.X)
 
-  const isThereAWin = (array: any) => winResults(array).includes(true);
+  const isOWinner = checkVertical(gameState, PlayerValue.O)
+    || checkHorizontal(gameState, PlayerValue.O)
+    || checkDiagonal1(gameState, PlayerValue.O)
+    || checkDiagonal2(gameState, PlayerValue.O);
 
-  return isThereAWin(gameState);
+  if (isXWinner) return PlayerValue.X
+  if (isOWinner) return PlayerValue.O
+  return null
+
 }
