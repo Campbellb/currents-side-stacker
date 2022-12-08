@@ -4,3 +4,5 @@ export enum PlayerValue {
 }
 
 export type BoardItemValue = 'X' | 'O' | null
+
+export type GameState = BoardItemValue[][]
