@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import io from 'Socket.IO-client'
+import io from 'socket.io-client'
 import * as S from './styles'
 import { PlayerValue, BoardItemValue, GameState } from '../../types'
 import { useInitialGameState } from '../../utils/hooks/useInitialGameState'
