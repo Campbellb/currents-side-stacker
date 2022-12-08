@@ -6,7 +6,17 @@ import { useInitialGameState } from '../../utils/hooks/useInitialGameState'
 import { checkWinner } from '../../utils/checkWinner'
 
 let socket: any
-export const Board = () => {
+
+interface BoardProps {
+  gameId?: string
+}
+
+interface MsgProps {
+  gameId: string,
+  gameState: GameState
+}
+
+export const Board: React.FC<BoardProps> = ({ gameId }) => {
   const initialGameState = useInitialGameState()
   const [gameState, setGameState] = useState<GameState>(initialGameState)
   const [activePlayer, setActivePlayer] = useState<PlayerValue>(PlayerValue.X)
@@ -33,8 +43,8 @@ export const Board = () => {
       console.log('socket connected')
     })
 
-    socket.on('update-game-state', (msg: GameState) => {
-      setGameState(msg)
+    socket.on('update-game-state', (msg: MsgProps) => {
+      setGameState(msg.gameState)
     })
   }
 
@@ -43,7 +53,7 @@ export const Board = () => {
       let newGameState = [...gameState]
       newGameState[rowIndex][colIndex] = activePlayer
       setGameState(newGameState)
-      socket.emit('game-state-change', newGameState)
+      socket.emit('game-state-change', {gameId, gameState: newGameState})
       activePlayer === PlayerValue.X ? setActivePlayer(PlayerValue.O) : setActivePlayer(PlayerValue.X)
     }
   }
