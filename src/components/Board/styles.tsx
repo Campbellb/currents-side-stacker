@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 
 export const BoardRow = styled.div`
   display: flex;
@@ -14,4 +14,22 @@ export const BoardItem = styled.div`
   align-items: center;
   border: 1px solid white;
   cursor: pointer;
+`
+
+interface WinnerBannerProps {
+  enabled: boolean
+}
+
+export const WinnerBanner = styled.div<WinnerBannerProps>`
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-radius: 1rem;
+  color: black;
+
+  ${props => props.enabled && css`
+    background-color: #ADD8E6;
+  `}
 `

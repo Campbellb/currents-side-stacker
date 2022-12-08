@@ -8,16 +8,19 @@ export const Board = () => {
   const initialGameState = useInitialGameState()
   const [gameState, setGameState] = useState<BoardItemValue[][]>(initialGameState)
   const [activePlayer, setActivePlayer] = useState<PlayerValue>(PlayerValue.X)
-  const [gameOver, setGameOver] = useState<boolean>(false)
+  const [winner, setWinner] = useState<BoardItemValue>(null)
+  const isWinner = winner !== null
 
   useEffect(() => {
-    const isWinner = checkWinner(gameState)
+    const winningPlayer = checkWinner(gameState)
     const boardFull = !gameState.some((row: BoardItemValue[]) => row.includes(null));
-    (isWinner !== null || boardFull) && setGameOver(true)
+    if (winningPlayer !== null || boardFull) {
+      setWinner(winningPlayer)
+    }
   }, [gameState])
 
   const handlePlacement = (rowIndex: number, colIndex: number) => {
-    if (!gameOver && gameState[rowIndex][colIndex] === null) {
+    if (!isWinner && gameState[rowIndex][colIndex] === null) {
       let newGameState = [...gameState]
       newGameState[rowIndex][colIndex] = activePlayer
       setGameState(newGameState)
@@ -27,6 +30,9 @@ export const Board = () => {
 
   return (
     <div>
+      <S.WinnerBanner enabled={isWinner}>
+        {isWinner && <>{winner} won!</>}
+      </S.WinnerBanner>
       {gameState.map((row: BoardItemValue[], rowIndex: number) =>
         <S.BoardRow key={`row${rowIndex}`}>
           <button onClick={() => handlePlacement(rowIndex, row.indexOf(null))}>+</button>

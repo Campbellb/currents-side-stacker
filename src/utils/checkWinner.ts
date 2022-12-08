@@ -2,7 +2,7 @@ import { BoardItemValue, PlayerValue } from "../types";
 
 const WINNING_NUMBER = 4
 
-function checkHorizontal(gameState: BoardItemValue[][], player: PlayerValue) {
+const checkHorizontal = (gameState: BoardItemValue[][], player: PlayerValue) => {
   for (let i = 0; i < gameState.length; i++) {
     let count = 0;
     for (let j = 0; j < gameState[i].length; j++) {
@@ -19,20 +19,20 @@ function checkHorizontal(gameState: BoardItemValue[][], player: PlayerValue) {
   return false;
 }
 
-function checkVertical(gameState: BoardItemValue[][], player: PlayerValue) {
+const checkVertical = (gameState: BoardItemValue[][], player: PlayerValue) => {
   const transposedArray = gameState[0].map((_, colIndex) => gameState.map(row => row[colIndex]));
   return checkHorizontal(transposedArray, player)
 }
 
-function checkDiagonal1(gameState: BoardItemValue[][], player: PlayerValue) {
+const checkDiagonal1 = (gameState: BoardItemValue[][], player: PlayerValue) => {
   return false;
 }
 
-function checkDiagonal2(gameState: BoardItemValue[][], player: PlayerValue) {
+const checkDiagonal2 = (gameState: BoardItemValue[][], player: PlayerValue) => {
   return false;
 }
 
-export function checkWinner(gameState: BoardItemValue[][]) {
+export const checkWinner = (gameState: BoardItemValue[][]) => {
   const isXWinner = checkVertical(gameState, PlayerValue.X)
     || checkHorizontal(gameState, PlayerValue.X)
     || checkDiagonal1(gameState, PlayerValue.X)
