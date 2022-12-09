@@ -4,10 +4,7 @@ import * as S from './styles'
 import { PlayerValue, BoardItemValue, GameState } from '../../types'
 import { useInitialGameState } from '../../utils/hooks/useInitialGameState'
 import { checkWinner } from '../../utils/checkWinner'
-
-interface BoardProps {
-  gameId?: string
-}
+import { useRouter } from 'next/router'
 
 interface MsgProps {
   gameId: string,
@@ -17,12 +14,15 @@ interface MsgProps {
 
 let socket: any
 
-export const Board: React.FC<BoardProps> = ({ gameId }) => {
+export const Board: React.FC<any> = ({ gameId }) => {
+  const router = useRouter()
+  const { player } = router.query
   const initialGameState = useInitialGameState()
   const [gameState, setGameState] = useState<GameState>(initialGameState)
   const [activePlayer, setActivePlayer] = useState<PlayerValue>(PlayerValue.X)
   const [winner, setWinner] = useState<BoardItemValue>(null)
   const isWinner = winner !== null
+  const isMyTurn = activePlayer === player
 
   useEffect(() => {
     socketInitializer()
@@ -53,7 +53,7 @@ export const Board: React.FC<BoardProps> = ({ gameId }) => {
   }
 
   const handlePlacement = (rowIndex: number, colIndex: number) => {
-    if (!isWinner && gameState[rowIndex][colIndex] === null) {
+    if (isMyTurn && !isWinner && gameState[rowIndex][colIndex] === null) {
       let newGameState = [...gameState]
       newGameState[rowIndex][colIndex] = activePlayer
       setGameState(newGameState)
@@ -66,6 +66,7 @@ export const Board: React.FC<BoardProps> = ({ gameId }) => {
       <S.WinnerBanner enabled={isWinner}>
         {isWinner && <>{winner} won!</>}
       </S.WinnerBanner>
+      <p></p>
       {gameState.map((row: BoardItemValue[], rowIndex: number) =>
         <S.BoardRow key={`row${rowIndex}`}>
           <button onClick={() => handlePlacement(rowIndex, row.indexOf(null))}>+</button>
