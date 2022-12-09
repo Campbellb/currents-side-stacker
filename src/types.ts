@@ -21,3 +21,13 @@ export enum PlayerValue {
 export type BoardItemValue = 'X' | 'O' | null
 
 export type GameState = BoardItemValue[][]
+
+
+export type GameRecord = {
+  gameId: string,
+  turn: PlayerValue,
+  gameState: GameState
+}
+export interface IGameRecord {
+  [key: string]: GameRecord
+}

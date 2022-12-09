@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import io from 'socket.io-client'
+import io, { Socket } from 'socket.io-client'
 import * as S from './styles'
 import { PlayerValue, BoardItemValue, GameState } from '../../types'
 import { useInitialGameState } from '../../utils/hooks/useInitialGameState'
 import { checkWinner } from '../../utils/checkWinner'
 import { useRouter } from 'next/router'
+import { InfoBanner } from './InfoBanner'
 
 interface MsgProps {
   gameId: string,
@@ -12,16 +13,15 @@ interface MsgProps {
   turn: PlayerValue
 }
 
-let socket: any
+let socket: Socket
 
-export const Board: React.FC<any> = ({ gameId }) => {
+export const Board: React.FC = () => {
   const router = useRouter()
-  const { player } = router.query
+  const { player, gameId } = router.query
   const initialGameState = useInitialGameState()
   const [gameState, setGameState] = useState<GameState>(initialGameState)
   const [activePlayer, setActivePlayer] = useState<PlayerValue>(PlayerValue.X)
   const [winner, setWinner] = useState<BoardItemValue>(null)
-  const isWinner = winner !== null
   const isMyTurn = activePlayer === player
 
   useEffect(() => {
@@ -45,15 +45,13 @@ export const Board: React.FC<any> = ({ gameId }) => {
     })
 
     socket.on('update-game-state', (msg: MsgProps) => {
-      if(msg.gameId === gameId) {
-        setGameState(msg.gameState)
-        setActivePlayer(msg.turn)
-      }
+      setGameState(msg.gameState)
+      setActivePlayer(msg.turn)
     })
   }
 
   const handlePlacement = (rowIndex: number, colIndex: number) => {
-    if (isMyTurn && !isWinner && gameState[rowIndex][colIndex] === null) {
+    if (isMyTurn && winner === null && gameState[rowIndex][colIndex] === null) {
       let newGameState = [...gameState]
       newGameState[rowIndex][colIndex] = activePlayer
       setGameState(newGameState)
@@ -63,10 +61,7 @@ export const Board: React.FC<any> = ({ gameId }) => {
 
   return (
     <div>
-      <S.WinnerBanner enabled={isWinner}>
-        {isWinner && <>{winner} won!</>}
-      </S.WinnerBanner>
-      <p></p>
+      <InfoBanner winner={winner} activePlayer={activePlayer} />
       {gameState.map((row: BoardItemValue[], rowIndex: number) =>
         <S.BoardRow key={`row${rowIndex}`}>
           <button onClick={() => handlePlacement(rowIndex, row.indexOf(null))}>+</button>
