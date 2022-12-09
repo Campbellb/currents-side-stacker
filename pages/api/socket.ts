@@ -2,7 +2,7 @@ import { Server, Socket } from 'socket.io'
 import { Client } from 'pg';
 import { getInitialGameState } from '../../src/utils/getInitialGameState';
 import type { NextApiRequest } from 'next'
-import type { NextApiResponseWithSocket } from '../../src/types'
+import { NextApiResponseWithSocket, PlayerValue } from '../../src/types'
 
 const games: any = {}
 
@@ -59,7 +59,17 @@ const SocketHandler = (_: NextApiRequest, res: NextApiResponseWithSocket) => {
 
       socket.on('game-state-change', msg => {
         const gameId = msg.gameId
-        socket.broadcast.emit('update-game-state', msg)
+        const updatedGame = !games[gameId] ? {
+          gameId,
+          gameState: msg.gameState,
+          turn: PlayerValue.X
+        } : {
+          gameId,
+          gameState: msg.gameState,
+          turn: (msg.turn === PlayerValue.X ? PlayerValue.O : PlayerValue.X)
+        }
+        games[gameId] = updatedGame
+        socket.broadcast.emit('update-game-state', updatedGame)
       })
     })
   }

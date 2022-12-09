@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { Board } from '../src/components/Board'
+import { Game } from '../src/components/Game'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
@@ -12,7 +13,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <Board />
+        <Game />
       </main>
     </div>
   )

@@ -5,16 +5,17 @@ import { PlayerValue, BoardItemValue, GameState } from '../../types'
 import { useInitialGameState } from '../../utils/hooks/useInitialGameState'
 import { checkWinner } from '../../utils/checkWinner'
 
-let socket: any
-
 interface BoardProps {
   gameId?: string
 }
 
 interface MsgProps {
   gameId: string,
-  gameState: GameState
+  gameState: GameState,
+  turn: PlayerValue
 }
+
+let socket: any
 
 export const Board: React.FC<BoardProps> = ({ gameId }) => {
   const initialGameState = useInitialGameState()
@@ -44,7 +45,10 @@ export const Board: React.FC<BoardProps> = ({ gameId }) => {
     })
 
     socket.on('update-game-state', (msg: MsgProps) => {
-      setGameState(msg.gameState)
+      if(msg.gameId === gameId) {
+        setGameState(msg.gameState)
+        setActivePlayer(msg.turn)
+      }
     })
   }
 
@@ -53,8 +57,7 @@ export const Board: React.FC<BoardProps> = ({ gameId }) => {
       let newGameState = [...gameState]
       newGameState[rowIndex][colIndex] = activePlayer
       setGameState(newGameState)
-      socket.emit('game-state-change', {gameId, gameState: newGameState})
-      activePlayer === PlayerValue.X ? setActivePlayer(PlayerValue.O) : setActivePlayer(PlayerValue.X)
+      socket.emit('game-state-change', {gameId, gameState: newGameState, turn: activePlayer})
     }
   }
 
