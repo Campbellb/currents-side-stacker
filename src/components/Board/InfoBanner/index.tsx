@@ -13,6 +13,7 @@ export const InfoBanner: React.FC<InfoBannerProps> = ({ winner, activePlayer }) 
   const { player, gameId } = router.query
   const isWinner = winner !== null
   const yourTurn = player === activePlayer
+  const winnerString = winner === player ? `Player "${player}" won!` : `Player "${player}" lost!`
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(gameId as string)
@@ -29,8 +30,8 @@ export const InfoBanner: React.FC<InfoBannerProps> = ({ winner, activePlayer }) 
         </S.CopyButton>
       </S.InfoSection>
       <S.WinnerBanner>
-        {isWinner && <>{winner} won!</>}
-        {!isWinner && yourTurn ? <>{player}, it&apos;s your turn!</> : <>{player}, it&apos;s NOT your turn!</>}
+        {isWinner && <>{winnerString}</>}
+        {!isWinner && (yourTurn ? <>{player}, it&apos;s your turn!</> : <>{player}, it&apos;s NOT your turn!</>)}
       </S.WinnerBanner>
     </div>
   )

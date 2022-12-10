@@ -1,5 +1,11 @@
 import styled, { css } from "styled-components"
 
+export const BoardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`
+
 export const BoardRow = styled.div`
   display: flex;
   flex-direction: row;
@@ -16,20 +22,13 @@ export const BoardItem = styled.div`
   cursor: pointer;
 `
 
-interface WinnerBannerProps {
-  enabled: boolean
-}
-
-export const WinnerBanner = styled.div<WinnerBannerProps>`
-  height: 2rem;
+export const MoveButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 1rem;
-  border-radius: 1rem;
-  color: black;
-
-  ${props => props.enabled && css`
-    background-color: #ADD8E6;
-  `}
+  width: 30px;
+  border-radius: 50px;
+  padding: 0.5rem;
+  border: none;
+  cursor: pointer;
 `

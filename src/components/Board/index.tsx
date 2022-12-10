@@ -62,19 +62,21 @@ export const Board: React.FC = () => {
   return (
     <div>
       <InfoBanner winner={winner} activePlayer={activePlayer} />
+      <S.BoardContainer>
       {gameState.map((row: BoardItemValue[], rowIndex: number) =>
         <S.BoardRow key={`row${rowIndex}`}>
-          <button onClick={() => handlePlacement(rowIndex, row.indexOf(null))}>+</button>
+          <S.MoveButton onClick={() => handlePlacement(rowIndex, row.indexOf(null))}>+</S.MoveButton>
           {row.map((item: BoardItemValue, colIndex) =>
             <S.BoardItem
-              key={`i${rowIndex}${colIndex}`}
+            key={`i${rowIndex}${colIndex}`}
             >
               {item}
             </S.BoardItem>
           )}
-          <button onClick={() => handlePlacement(rowIndex, row.lastIndexOf(null))}>+</button>
+          <S.MoveButton onClick={() => handlePlacement(rowIndex, row.lastIndexOf(null))}>+</S.MoveButton>
         </S.BoardRow>
       )}
+      </S.BoardContainer>
     </div>
   )
 }

@@ -11,12 +11,9 @@ export const Game: React.FC = () => {
   const router = useRouter()
   const [gameId, setGameId] = useState<string>('')
   const [player, setPlayer] = useState<string>(PlayerValue.X)
-  const [warning, setWarning] = useState<string>('')
   const handleJoinGame = () => {
     if(gameId !== '') {
       router.push(`/${gameId}?player=${player}`)
-    } else {
-      setWarning('Please enter a valid Game ID, or click New Game')
     }
   }
 
