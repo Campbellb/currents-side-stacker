@@ -1,5 +1,5 @@
 import type { Server as HTTPServer } from 'http'
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiResponse } from 'next'
 import type { Socket as NetSocket } from 'net'
 import type { Server as IOServer } from 'socket.io'
 
@@ -21,7 +21,6 @@ export enum PlayerValue {
 export type BoardItemValue = 'X' | 'O' | null
 
 export type GameState = BoardItemValue[][]
-
 
 export type GameRecord = {
   gameId: string,

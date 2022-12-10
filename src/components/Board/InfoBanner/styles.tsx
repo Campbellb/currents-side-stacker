@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components"
 
-export const WinnerBanner = styled.div`
+export const InfoBanner = styled.div`
   height: 2rem;
   display: flex;
   justify-content: center;

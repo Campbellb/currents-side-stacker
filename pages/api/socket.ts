@@ -1,6 +1,6 @@
 import { Server } from 'socket.io'
 import type { NextApiRequest } from 'next'
-import { NextApiResponseWithSocket, PlayerValue, IGameRecord } from '../../src/types'
+import { NextApiResponseWithSocket, PlayerValue } from '../../src/types'
 
 const SocketHandler = (_: NextApiRequest, res: NextApiResponseWithSocket) => {
   // const sequelize = new Sequelize('sqlite::memory:');
@@ -24,7 +24,6 @@ const SocketHandler = (_: NextApiRequest, res: NextApiResponseWithSocket) => {
         //   }
         // })
         const updatedGame = {
-          // gameId,
           gameState: msg.gameState,
           turn: (msg.turn === PlayerValue.X ? PlayerValue.O : PlayerValue.X)
         }

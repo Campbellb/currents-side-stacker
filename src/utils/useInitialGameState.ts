@@ -1,4 +1,4 @@
-import { GameState } from "../../types";
+import { GameState } from "../types";
 
 export const useInitialGameState = (): GameState => {
   var initialGameState: GameState = [];
