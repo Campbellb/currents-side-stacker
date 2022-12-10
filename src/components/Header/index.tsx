@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { StackerIcon } from '../icons/StackerIcon'
 import * as S from './styles'
+import { StackerIcon } from '../icons/StackerIcon'
 
 export const Header: React.FC = () => {
   return (

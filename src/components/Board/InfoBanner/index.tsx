@@ -1,6 +1,6 @@
+import { useRouter } from 'next/router'
 import * as S from './styles'
 import { PlayerValue, BoardItemValue } from '../../../types'
-import { useRouter } from 'next/router'
 import { CopyIcon } from '../../icons/Copy'
 
 interface InfoBannerProps {

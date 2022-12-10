@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import io, { Socket } from 'socket.io-client'
+import { useRouter } from 'next/router'
 import * as S from './styles'
-import { PlayerValue, BoardItemValue, GameState } from '../../types'
+import { InfoBanner } from './InfoBanner'
 import { useInitialGameState } from '../../utils/hooks/useInitialGameState'
 import { checkWinner } from '../../utils/checkWinner'
-import { useRouter } from 'next/router'
-import { InfoBanner } from './InfoBanner'
+import { PlayerValue, BoardItemValue, GameState } from '../../types'
 
 interface MsgProps {
   gameId: string,

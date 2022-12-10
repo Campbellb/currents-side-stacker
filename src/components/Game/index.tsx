@@ -1,11 +1,7 @@
-import { useEffect, useState } from 'react'
-import io from 'socket.io-client'
-import * as S from './styles'
-import { PlayerValue, BoardItemValue, GameState } from '../../types'
-import { useInitialGameState } from '../../utils/hooks/useInitialGameState'
-import { checkWinner } from '../../utils/checkWinner'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
-import { Board } from '../Board'
+import * as S from './styles'
+import { PlayerValue } from '../../types'
 
 export const Game: React.FC = () => {
   const router = useRouter()
