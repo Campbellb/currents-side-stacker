@@ -5,9 +5,8 @@ This is a multiplayer side stacker application, built with Next.js, Typescript, 
 First, run the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result!
