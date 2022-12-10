@@ -8,16 +8,15 @@ import { checkWinner } from '../../utils/checkWinner'
 import { PlayerValue, BoardItemValue, GameState } from '../../types'
 
 interface MsgProps {
-  gameId: string,
   gameState: GameState,
   turn: PlayerValue
 }
 
 let socket: Socket
 
-export const Board: React.FC = () => {
+export const Board: React.FC<any> = () => {
   const router = useRouter()
-  const { player, gameId } = router.query
+  const { player } = router.query
   const initialGameState = useInitialGameState()
   const [gameState, setGameState] = useState<GameState>(initialGameState)
   const [activePlayer, setActivePlayer] = useState<PlayerValue>(PlayerValue.X)
@@ -45,8 +44,8 @@ export const Board: React.FC = () => {
     })
 
     socket.on('update-game-state', (msg: MsgProps) => {
-      setGameState(msg.gameState)
       setActivePlayer(msg.turn)
+      setGameState(msg.gameState)
     })
   }
 
@@ -55,7 +54,7 @@ export const Board: React.FC = () => {
       let newGameState = [...gameState]
       newGameState[rowIndex][colIndex] = activePlayer
       setGameState(newGameState)
-      socket.emit('game-state-change', {gameId, gameState: newGameState, turn: activePlayer})
+      socket.emit('game-state-change', {gameState: newGameState, turn: activePlayer})
     }
   }
 

@@ -5,6 +5,8 @@ import { Board } from "../../src/components/Board"
 import { Header } from "../../src/components/Header"
 
 const GameId = () => {
+  const router = useRouter()
+  const { gameId } = router.query
   return (
     <div>
       <Head>
@@ -14,7 +16,7 @@ const GameId = () => {
       </Head>
       <Header />
       <S.MainContainer>
-        <Board />
+        <Board gameId={gameId} />
       </S.MainContainer>
     </div>
   )

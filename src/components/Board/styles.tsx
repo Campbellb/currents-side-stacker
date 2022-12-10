@@ -19,7 +19,7 @@ export const BoardItem = styled.div`
   justify-content: center;
   align-items: center;
   border: 1px solid white;
-  cursor: pointer;
+  cursor: default;
 `
 
 export const MoveButton = styled.button`
